@@ -1,0 +1,73 @@
+.welcome-container {
+    text-align: center;
+    margin: 3rem auto;
+    padding: 3rem;
+    max-width: 1000px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+.welcome-container h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.welcome-container p {
+    font-size: 1.4rem;
+    margin-bottom: 3rem;
+    color: #666;
+}
+
+.navigation-cards {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    text-decoration: none; /* Remove underline for links */
+    color: inherit; /* Inherit text color for the card */
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+    margin-bottom: 1.5rem;
+    position: relative;
+    font-size: 3rem;
+    color: #007bff;
+}
+
+.card-icon img {
+    width: 60px;
+    height: 60px;
+}
+
+.card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #007bff;
+}
+
+.card p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}

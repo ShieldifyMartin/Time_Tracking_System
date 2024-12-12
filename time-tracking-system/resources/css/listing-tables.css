@@ -35,6 +35,27 @@ p {
     color: #555;
 }
 
+.btn {
+    padding: 0.2rem 0.4rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
 @media screen and (max-width: 768px) {
     table {
         width: 100%;

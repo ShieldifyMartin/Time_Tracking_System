@@ -36,8 +36,7 @@ class EmployeeController extends Controller
         ]);
 
         $id = $this->employeeService->store($data);
-
-        return response()->json(['id' => $id, 'message' => 'Employee created successfully'], 201);
+        return redirect('/employees')->with('success', 'Employee created successfully');
     }
 
     public function findById($id)
@@ -67,8 +66,7 @@ class EmployeeController extends Controller
         ]);
 
         $this->employeeService->update($id, $data);
-
-        return response()->json(['message' => 'Employee updated successfully']);
+        return redirect('/employees')->with('success', 'Employee updated successfully');
     }
 
     public function delete($id)
@@ -79,12 +77,23 @@ class EmployeeController extends Controller
             return response()->json(['error' => 'Employee not found'], 404);
         }
 
-        return response()->json(['message' => 'Employee deleted successfully']);
+        return redirect('/employees')->with('success', 'Employee deleted successfully');
     }
 
     public function allEmployees()
     {
         $employees = $this->employeeService->list();
         return view('employees.all', compact('employees'));
+    }
+
+    public function getCreateView()
+    {
+        return view('employees.add');
+    }
+
+    public function getEditView($id)
+    {
+        $employee = $this->employeeService->findById($id);
+        return view('employees.edit', compact('employee'));
     }
 }

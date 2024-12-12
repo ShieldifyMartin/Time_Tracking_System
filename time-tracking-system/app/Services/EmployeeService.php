@@ -13,7 +13,7 @@ class EmployeeService
     }
 
     // Retrieve a specific employee by ID
-    public function find($id)
+    public function findById($id)
     {
         return Employee::find($id);
     }

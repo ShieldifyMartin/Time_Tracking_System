@@ -12,16 +12,16 @@ class WorkloadService
         return Workload::all();
     }
 
-    // Create a new workload
-    public function store(array $data)
-    {
-        return Workload::create($data);
-    }
-
     // Find workload by ID
     public function findById($id)
     {
         return Workload::find($id);
+    }
+
+    // Create a new workload
+    public function store(array $data)
+    {
+        return Workload::create($data);
     }
 
     // Update workload by ID

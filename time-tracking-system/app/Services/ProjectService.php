@@ -13,16 +13,16 @@ class ProjectService
         return Project::all();
     }
 
-    // Create a new project
-    public function store(array $data)
-    {
-        return Project::create($data);
-    }
-
     // Retrieve a specific project by ID
     public function findById($id)
     {
         return Project::find($id);
+    }
+
+    // Create a new project
+    public function store(array $data)
+    {
+        return Project::create($data);
     }
 
     // Find the project and update its details

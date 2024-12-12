@@ -27,12 +27,11 @@ class ProjectController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'required|string|in:planned,active,completed,cancelled',
+            'status' => 'sometimes|string|in:planned,active,completed,on_hold,cancelled',
         ]);
 
         $project = $this->projectService->store($data);
-
-        return response()->json(['id' => $project->toArray()['id'], 'message' => 'Project created successfully'], 201);
+        return redirect('/projects')->with('success', 'Project created successfully');
     }
 
     public function findById($id)
@@ -53,7 +52,7 @@ class ProjectController extends Controller
             'description' => 'nullable|string',
             'start_date' => 'sometimes|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'status' => 'sometimes|string|in:planned,active,completed,cancelled',
+            'status' => 'sometimes|string|in:planned,active,completed,on_hold,cancelled',
         ]);
 
         $updatedData = $this->projectService->update($id, $data);
@@ -62,7 +61,7 @@ class ProjectController extends Controller
             return response()->json(['error' => 'Project not found'], 404);
         }
 
-        return response()->json(['message' => 'Project updated successfully']);
+        return redirect('/projects')->with('success', 'Project updated successfully');
     }
 
     public function delete($id)
@@ -73,7 +72,7 @@ class ProjectController extends Controller
             return response()->json(['error' => 'Project not found'], 404);
         }
 
-        return response()->json(['message' => 'Project deleted successfully']);
+        return redirect('/projects')->with('success', 'Project deleted successfully');
     }
 
     public function getWorkloads($id)
@@ -85,5 +84,16 @@ class ProjectController extends Controller
         }
 
         return response()->json(array_map(fn($workload) => $workload->toArray(), array_filter($workloads)));
+    }
+
+    public function getCreateView()
+    {
+        return view('projects.add');
+    }
+
+    public function getEditView($id)
+    {
+        $project = $this->projectService->findById($id);
+        return view('projects.edit', compact('project'));
     }
 }

@@ -22,9 +22,10 @@
             <label for="status">Status:</label>
             <select id="status" name="status" required>
                 <option value="planned">Planned</option>
-                <option value="in_progress">In Progress</option>
+                <option value="active">Active</option>
                 <option value="completed">Completed</option>
                 <option value="on_hold">On Hold</option>
+                <option value="cancelled">Cancelled</option>
             </select>
 
             <button type="submit">Add Project</button>

@@ -3,14 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\EmployeeService;
+use App\Services\ProjectService;
 use App\Services\WorkloadService;
+use App\Models\Employee;
+use App\Models\Project;
 
 class WorkloadController extends Controller
 {
+    protected $employeeService;
+    protected $projectService;
     protected $workloadService;
 
-    public function __construct(WorkloadService $workloadService)
+    public function __construct(EmployeeService $employeeService, ProjectService $projectService, WorkloadService $workloadService)
     {
+        $this->employeeService = $employeeService;
+        $this->projectService = $projectService;
         $this->workloadService = $workloadService;
     }
 
@@ -42,7 +50,7 @@ class WorkloadController extends Controller
         ]);
 
         $id = $this->workloadService->store($data);
-        return response()->json(['id' => $id, 'message' => 'Workload created successfully'], 201);
+        return redirect('/workloads')->with('success', 'Workload created successfully');
     }
 
     /**
@@ -85,7 +93,7 @@ class WorkloadController extends Controller
             return response()->json(['error' => 'Workload not found'], 404);
         }
 
-        return response()->json(['message' => 'Workload updated successfully']);
+        return redirect('/workloads')->with('success', 'Workload updated successfully');
     }
 
     /**
@@ -102,6 +110,23 @@ class WorkloadController extends Controller
             return response()->json(['error' => 'Workload not found'], 404);
         }
 
-        return response()->json(['message' => 'Workload deleted successfully']);
+        return redirect('/workloads')->with('success', 'Workload deleted successfully');
+    }
+
+    // Load view functions
+    public function getCreateView()
+    {
+        $employees = $this->employeeService->list();
+        $projects = $this->projectService->list();
+
+        return view('workloads.add', compact('employees', 'projects'));
+    }
+
+    public function getEditView($id)
+    {
+        $employees = $this->employeeService->list();
+        $projects = $this->projectService->list();
+        $workload = $this->workloadService->findById($id);
+        return view('workloads.edit', compact('employees', 'projects', 'workload'));
     }
 }

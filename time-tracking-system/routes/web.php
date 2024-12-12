@@ -1,40 +1,72 @@
 <?php
 
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\WorkloadController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // Welcome page
-Route::view('/', 'welcome');
+Route::view('/', 'welcome')->name('home');
 
 // Employee routes
-Route::prefix('employees')->group(function () {
-    Route::get('/', [EmployeeController::class, 'list'])->name('employees.list');
-    Route::post('/', [EmployeeController::class, 'store']);
-    Route::view('/add', 'employees.add')->name('employees.add');
-    Route::get('/{id}', [EmployeeController::class, 'findById']);
-    Route::put('/{id}', [EmployeeController::class, 'update']);
-    Route::delete('/{id}', [EmployeeController::class, 'delete']);
+Route::prefix('employees')->name('employees.')->group(function () {
+    Route::get('/', [EmployeeController::class, 'list'])->name('list');
+    Route::post('/', [EmployeeController::class, 'store'])->name('store');
+    Route::get('/add', [EmployeeController::class, 'getCreateView'])->name('add');
+    Route::get('/edit/{id}', [EmployeeController::class, 'getEditView'])->name('edit');
+    Route::get('/{id}', [EmployeeController::class, 'findById'])->name('show');
+    Route::put('/{id}', [EmployeeController::class, 'update'])->name('update');
+    Route::delete('/{id}', [EmployeeController::class, 'delete'])->name('delete');
 });
 
 // Workload routes
-Route::prefix('workloads')->group(function () {
-    Route::get('/', [WorkloadController::class, 'list'])->name('workloads.list');
-    Route::post('/', [WorkloadController::class, 'store']);
-    Route::view('/add', 'workloads.add')->name('workloads.add');
-    Route::get('/{id}', [WorkloadController::class, 'findById']);
-    Route::put('/{id}', [WorkloadController::class, 'update']);
-    Route::delete('/{id}', [WorkloadController::class, 'delete']);
+Route::prefix('workloads')->name('workloads.')->group(function () {
+    Route::get('/', [WorkloadController::class, 'list'])->name('list');
+    Route::post('/', [WorkloadController::class, 'store'])->name('store');
+    Route::get('/add', [WorkloadController::class, 'getCreateView'])->name('add');
+    Route::get('/edit/{id}', [WorkloadController::class, 'getEditView'])->name('edit');
+    Route::get('/{id}', [WorkloadController::class, 'findById'])->name('show');
+    Route::put('/{id}', [WorkloadController::class, 'update'])->name('update');
+    Route::delete('/{id}', [WorkloadController::class, 'delete'])->name('delete');
 });
 
 // Project routes
 Route::prefix('projects')->group(function () {
     Route::get('/', [ProjectController::class, 'list'])->name('projects.list');
-    Route::post('/', [ProjectController::class, 'store']);
-    Route::view('/add', 'projects.add')->name('projects.add');
-    Route::get('/{id}', [ProjectController::class, 'findById']);
-    Route::put('/{id}', [ProjectController::class, 'update']);
-    Route::delete('/{id}', [ProjectController::class, 'delete']);
-    Route::get('/{id}/workloads', [ProjectController::class, 'getWorkloads']);
+    Route::post('/', [ProjectController::class, 'store'])->name('projects.store');
+    Route::get('/add', [ProjectController::class, 'getCreateView'])->name('projects.add');
+    Route::get('/edit/{id}', [ProjectController::class, 'getEditView'])->name('projects.edit');
+    Route::get('/{id}', [ProjectController::class, 'findById'])->name('projects.show');
+    Route::put('/{id}', [ProjectController::class, 'update'])->name('projects.update');
+    Route::delete('/{id}', [ProjectController::class, 'delete'])->name('projects.delete');
+    Route::get('/{id}/workloads', [ProjectController::class, 'getWorkloads'])->name('projects.workloads');
+});
+
+Route::prefix('auth')->group(function () {
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+});
+Route::middleware('guest')->group(function () {
+    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('register', [RegisteredUserController::class, 'store']);
+    
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+});
+
+// Dashboard and profile routes
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+    
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
 });

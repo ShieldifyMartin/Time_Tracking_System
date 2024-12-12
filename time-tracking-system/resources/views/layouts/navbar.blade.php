@@ -7,22 +7,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active px-3 py-2" href="{{ route('employees.add') }}">Add Employee</a>
+                    <a class="nav-link px-3 py-2" href="{{ route('employees.list') }}">Employees</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link px-3 py-2" href="{{ route('employees.list') }}">Employee Listing</a>
+                    <a class="nav-link px-3 py-2" href="{{ route('projects.list') }}">Projects</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active px-3 py-2" href="{{ route('projects.add') }}">Add Project</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link px-3 py-2" href="{{ route('projects.list') }}">Project Listing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active px-3 py-2" href="{{ route('workloads.add') }}">Add Workload</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link px-3 py-2" href="{{ route('workloads.list') }}">Workload Listing</a>
+                    <a class="nav-link px-3 py-2" href="{{ route('workloads.list') }}">Workloads</a>
                 </li>
             </ul>
         </div>
