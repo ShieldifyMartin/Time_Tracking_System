@@ -64,11 +64,14 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-
+        Barryvdh\DomPDF\ServiceProvider::class,
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+    ],
+    'aliases' => [
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
     /*

@@ -20,6 +20,6 @@ class AuthController extends Controller
         }
 
         // Redirect to the welcome page after login
-        return redirect()->route('home');
+        return redirect('/');
     }
 }

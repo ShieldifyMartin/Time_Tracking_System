@@ -18,6 +18,18 @@ class WorkloadService
         return Workload::find($id);
     }
 
+    // Find workloads by employee ID
+    public function findByEmployeeId($employeeId)
+    {
+        return Workload::where('employee_id', $employeeId)->get();
+    }
+
+    // Find workloads by project ID
+    public function findByProjectId($projectId)
+    {
+        return Workload::where('project_id', $projectId)->get();
+    }
+
     // Create a new workload
     public function store(array $data)
     {

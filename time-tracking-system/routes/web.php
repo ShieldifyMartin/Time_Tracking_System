@@ -7,7 +7,9 @@ use App\Http\Controllers\WorkloadController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ReportController;
+
+require __DIR__.'/auth.php';
 
 // Welcome page
 Route::view('/', 'welcome')->name('home');
@@ -46,27 +48,13 @@ Route::prefix('projects')->group(function () {
     Route::get('/{id}/workloads', [ProjectController::class, 'getWorkloads'])->name('projects.workloads');
 });
 
-Route::prefix('auth')->group(function () {
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-});
-Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
-    
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-});
-
-// Dashboard and profile routes
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    
-
-    Route::prefix('profile')->group(function () {
-        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
-        Route::patch('/', [ProfileController::class, 'update'])->name('update');
-        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+// Reports routes
+Route::prefix('reports')->group(function () {
+    Route::get('/generate', [ReportController::class, 'generateReport'])->name('reports.generate');
+    Route::get('/test-pdf', function() {
+        $pdf = PDF::loadHTML('<h1>Hello, PDF!</h1>');
+        return $pdf->download('test.pdf');
     });
 });
+
+Auth::routes();
