@@ -34,12 +34,14 @@
                         <td>{{ $project->workloads->count() }}</td>
                         <td>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{ route('projects.delete', $project->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
-                                </form>
+                                @if(Auth::user() && (Auth::user()->id === $project->created_by || Auth::user()->role === 'admin'))
+                                    <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="{{ route('projects.delete', $project->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

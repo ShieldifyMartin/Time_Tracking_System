@@ -85,7 +85,14 @@
         </div>
     </div>
 
-    
+    <div class="card-body text-center mt-5">
+        <h5 class="card-title mb-3">Go to Charts</h5>
+        <div class="d-flex justify-content-center align-items-center">
+            <p class="card-text mb-0 me-3">Showcase in-depth chart for employees and projects working hours and analysis.</p>
+            <a href="{{ route('chart') }}" class="btn btn-primary px-5 py-2">Go to Charts</a>
+        </div>
+    </div>
+
     <!-- Generate Report Section - Admin only functionality -->
     @if(Auth::user() && Auth::user()->role === 'admin')
         <div class="card-body text-center mt-5">

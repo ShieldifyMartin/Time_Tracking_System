@@ -31,13 +31,15 @@
                         <td>{{ $workload->hours_worked }}</td>
                         <td>{{ $workload->description }}</td>
                         <td>
-                            <div class="d-flex gap-2">
-                                <a href="{{ route('workloads.edit', $workload->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{ route('workloads.delete', $workload->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this workload?')">Delete</button>
-                                </form>
+                            <div class="d-flex gap-2">    
+                                @if(Auth::user() && (Auth::user()->id === $workload->created_by || Auth::user()->role === 'admin'))
+                                    <a href="{{ route('workloads.edit', $workload->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="{{ route('workloads.delete', $workload->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this workload?')">Delete</button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

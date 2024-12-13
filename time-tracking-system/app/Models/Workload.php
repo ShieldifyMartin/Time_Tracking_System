@@ -17,6 +17,7 @@ class Workload extends Model
         'date',
         'hours_worked',
         'description',
+        'created_by',
     ];
 
     protected $casts = [
@@ -31,5 +32,10 @@ class Workload extends Model
     public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');
+    }
+    
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

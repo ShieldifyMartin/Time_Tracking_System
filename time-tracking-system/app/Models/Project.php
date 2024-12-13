@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Project extends Model
 {
@@ -17,6 +18,7 @@ class Project extends Model
         'start_date',
         'end_date',
         'status',
+        'created_by',
     ];
 
     protected $casts = [
@@ -27,5 +29,20 @@ class Project extends Model
     public function workloads()
     {
         return $this->hasMany(Workload::class, 'project_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    // Store method to set 'created_by'
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($project) {
+            $project->created_by = Auth::id();
+        });
     }
 }

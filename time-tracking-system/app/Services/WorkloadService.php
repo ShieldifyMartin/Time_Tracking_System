@@ -30,6 +30,15 @@ class WorkloadService
         return Workload::where('project_id', $projectId)->get();
     }
 
+    // Find workloads from the last month
+    public function getWorkloadsForLastMonth()
+    {
+        $dateFrom = now()->subMonth();
+        $dateTo = now();
+
+        return Workload::whereBetween('created_at', [$dateFrom, $dateTo])->get();
+    }
+
     // Create a new workload
     public function store(array $data)
     {

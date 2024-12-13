@@ -41,7 +41,7 @@ class EmployeeController extends Controller
 
     public function findById($id)
     {
-        $employee = $this->employeeService->find($id);
+        $employee = $this->employeeService->findById($id);
 
         if (!$employee) {
             return response()->json(['error' => 'Employee not found'], 404);

@@ -6,7 +6,9 @@
 <div>
     <h1>Employees</h1>
 
-    <a class="nav-link active w-auto px-3 py-2 btn btn-primary" href="{{ route('employees.add') }}">Add Employee</a>
+    @if(Auth::user() && Auth::user()->role === 'admin')
+        <a class="nav-link active w-auto px-3 py-2 btn btn-primary" href="{{ route('employees.add') }}">Add Employee</a>
+    @endif
 
     @if(isset($employees) && count($employees) > 0)
         <table>
@@ -46,12 +48,14 @@
                         </td>
                         <td>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                <form action="{{ route('employees.delete', $employee->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this employee?')">Delete</button>
-                                </form>
+                                @if(Auth::user() && Auth::user()->role === 'admin')
+                                    <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                    <form action="{{ route('employees.delete', $employee->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this employee?')">Delete</button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>

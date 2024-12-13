@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Services\EmployeeService;
 use App\Services\ProjectService;
@@ -49,6 +50,8 @@ class WorkloadController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        $data['created_by'] = Auth::id();
+
         $id = $this->workloadService->store($data);
         return redirect('/workloads')->with('success', 'Workload created successfully');
     }
@@ -79,6 +82,7 @@ class WorkloadController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorizeWorkloadAction($id);
         $data = $request->validate([
             'employee_id' => 'sometimes|string',
             'project_id' => 'sometimes|string',
@@ -104,6 +108,7 @@ class WorkloadController extends Controller
      */
     public function delete($id)
     {
+        $this->authorizeWorkloadAction($id);
         $deleted = $this->workloadService->delete($id);
 
         if (!$deleted) {
@@ -124,9 +129,21 @@ class WorkloadController extends Controller
 
     public function getEditView($id)
     {
+        $this->authorizeWorkloadAction($id);
         $employees = $this->employeeService->list();
         $projects = $this->projectService->list();
         $workload = $this->workloadService->findById($id);
         return view('workloads.edit', compact('employees', 'projects', 'workload'));
+    }
+
+    // Internal authorization method
+    private function authorizeWorkloadAction($id)
+    {
+        $workload = $this->workloadService->findById($id);
+
+        if (!$workload || ($workload->created_by !== Auth::id() && Auth::user()->role !== 'admin')) {
+            return redirect('/')->with('error', 'Unauthorized action.');
+        }
+    
     }
 }
