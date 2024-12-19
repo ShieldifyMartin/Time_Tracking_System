@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\EmployeeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -22,6 +23,7 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorizeAdminAction();
         $data = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -52,6 +54,7 @@ class EmployeeController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->authorizeAdminAction();
         $data = $request->validate([
             'first_name' => 'sometimes|string|max:255',
             'last_name' => 'sometimes|string|max:255',
@@ -71,6 +74,7 @@ class EmployeeController extends Controller
 
     public function delete($id)
     {
+        $this->authorizeAdminAction();
         $result = $this->employeeService->delete($id);
 
         if (!$result) {
@@ -88,12 +92,22 @@ class EmployeeController extends Controller
 
     public function getCreateView()
     {
+        $this->authorizeAdminAction();
         return view('employees.add');
     }
 
     public function getEditView($id)
     {
+        $this->authorizeAdminAction();
         $employee = $this->employeeService->findById($id);
         return view('employees.edit', compact('employee'));
+    }
+
+    // Internal authorization method
+    private function authorizeAdminAction()
+    {
+        if (Auth::user()->role !== 'admin') {
+            return redirect('/')->with('error', 'Unauthorized action.');
+        }
     }
 }

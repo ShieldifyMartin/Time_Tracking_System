@@ -22,6 +22,9 @@ class CreateEmployeesTable extends Migration
             $table->boolean('is_active');
             $table->timestamps();
         });
+        Schema::table('employees', function (Blueprint $table) {
+            $table->integer('total_hours_worked')->default(0)->change();
+        });
     }
 
     public function down()

@@ -14,7 +14,7 @@ class CreateProjectsTable extends Migration
             $table->text('description')->nullable();
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->string('status', 50);
+            $table->string('status', 50)->default('pending');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

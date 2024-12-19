@@ -15,6 +15,7 @@ class CreateWorkloadsTable extends Migration
             $table->date('date');
             $table->integer('hours_worked');
             $table->text('description')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

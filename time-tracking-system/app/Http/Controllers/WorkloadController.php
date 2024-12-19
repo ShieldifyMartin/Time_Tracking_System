@@ -144,6 +144,5 @@ class WorkloadController extends Controller
         if (!$workload || ($workload->created_by !== Auth::id() && Auth::user()->role !== 'admin')) {
             return redirect('/')->with('error', 'Unauthorized action.');
         }
-    
     }
 }

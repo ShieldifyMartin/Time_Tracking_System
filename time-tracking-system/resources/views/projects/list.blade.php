@@ -6,7 +6,9 @@
 <div>
     <h1>Projects</h1>
 
-    <a class="nav-link active w-auto px-3 py-2 btn btn-primary" href="{{ route('projects.add') }}">Add Project</a>
+    @if(Auth::user())
+        <a class="nav-link active w-auto px-3 py-2 btn btn-primary" href="{{ route('projects.add') }}">Add Project</a>
+    @endif
 
     @if(isset($projects) && count($projects) > 0)
         <table>

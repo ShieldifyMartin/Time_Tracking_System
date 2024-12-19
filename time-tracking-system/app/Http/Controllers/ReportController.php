@@ -6,6 +6,7 @@ use App\Services\EmployeeService;
 use App\Services\ProjectService;
 use App\Services\WorkloadService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class ReportController extends Controller
@@ -23,6 +24,11 @@ class ReportController extends Controller
 
     public function generateReport()
     {
+        // Internal authorization method
+        if (Auth::user()->role !== 'admin') {
+            return redirect('/')->with('error', 'Unauthorized action.');
+        }
+
         $reportHtml = "<h1>Management Report</h1>";
     
         // Fetch and add employee data to the report

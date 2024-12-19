@@ -6,7 +6,9 @@
 <div>
     <h1>Workloads</h1>
     
-    <a class="nav-link active w-auto px-3 py-2 btn btn-primary" href="{{ route('workloads.add') }}">Add Workload</a>
+    @if(Auth::user())
+        <a class="nav-link active w-auto px-3 py-2 btn btn-primary" href="{{ route('workloads.add') }}">Add Workload</a>
+    @endif
 
     @if(isset($workloads) && count($workloads) > 0)
         <table>
